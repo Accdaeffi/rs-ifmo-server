@@ -17,7 +17,8 @@ public class Advicer {
     public ResponseEntity<Object> handleException(EmptyArgumentException e) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("exception", e.getMessage());
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -26,7 +27,8 @@ public class Advicer {
     public ResponseEntity<Object> handleException(IncorrectArgumentException e) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("exception", e.getMessage());
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
@@ -35,16 +37,18 @@ public class Advicer {
     public ResponseEntity<Object> handleException(PersonWithSuchIdNotFoundException e) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("exception", e.getMessage());
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
 
-        return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
     
     @ExceptionHandler(WorkWithSQLException.class)
     public ResponseEntity<Object> handleException(WorkWithSQLException e) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put("exception", e.getMessage());
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }

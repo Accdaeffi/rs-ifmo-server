@@ -9,7 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ru.dnoskov.rsifmo.webservice.database.model.Person;
@@ -56,7 +56,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byName")
-	public List<Person> getPersonsByName(@RequestBody String name) throws WorkWithSQLException, EmptyArgumentException {
+	public List<Person> getPersonsByName(@RequestParam String name) throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		if (name == null || name.equals("")) {
@@ -72,7 +72,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/bySurname")
-	public List<Person> getPersonsBySurname(@RequestBody String surname)
+	public List<Person> getPersonsBySurname(@RequestParam String surname)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -89,7 +89,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byPatronymic")
-	public List<Person> getPersonsByPatronymic(@RequestBody String patronymic)
+	public List<Person> getPersonsByPatronymic(@RequestParam String patronymic)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -106,7 +106,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byAge")
-	public List<Person> getPersonsByAge(@RequestBody int age) throws WorkWithSQLException, IncorrectArgumentException {
+	public List<Person> getPersonsByAge(@RequestParam int age) throws WorkWithSQLException, IncorrectArgumentException {
 		if (age < 0) {
 			throw new IncorrectArgumentException("age");
 		}
@@ -122,7 +122,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byNameAndSurname")
-	public List<Person> getPersonsByNameAndSurname(@RequestBody String name, @RequestBody String surname)
+	public List<Person> getPersonsByNameAndSurname(@RequestParam String name, @RequestParam String surname)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -143,8 +143,10 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byFullName")
-	public List<Person> getPersonsByFullName(@RequestBody String name, @RequestBody String surname,
-			@RequestBody String patronymic) throws WorkWithSQLException, EmptyArgumentException {
+	public List<Person> getPersonsByFullName(@RequestParam String name, 
+			@RequestParam String surname,
+			@RequestParam String patronymic) 
+					throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		if (name == null || name.equals("")) {
@@ -168,7 +170,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/youngerThan")
-	public List<Person> getPersonsYoungerThan(@RequestBody int age)
+	public List<Person> getPersonsYoungerThan(@RequestParam int age)
 			throws WorkWithSQLException, IncorrectArgumentException {
 
 		if (age < 0) {
@@ -186,7 +188,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/olderThan")
-	public List<Person> getPersonsOlderThan(@RequestBody int age)
+	public List<Person> getPersonsOlderThan(@RequestParam int age)
 			throws WorkWithSQLException, IncorrectArgumentException {
 
 		if (age < 0) {
