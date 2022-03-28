@@ -1,0 +1,51 @@
+package ru.dnoskov.rsifmo.webservice.services.advices;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import ru.dnoskov.rsifmo.webservice.exceptions.*;
+
+@ControllerAdvice
+public class Advicer {
+
+    @ExceptionHandler(EmptyArgumentException.class)
+    public ResponseEntity<Object> handleException(EmptyArgumentException e) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("exception", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(IncorrectArgumentException.class)
+    public ResponseEntity<Object> handleException(IncorrectArgumentException e) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("exception", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(PersonWithSuchIdNotFoundException.class)
+    public ResponseEntity<Object> handleException(PersonWithSuchIdNotFoundException e) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("exception", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
+    }
+    
+    @ExceptionHandler(WorkWithSQLException.class)
+    public ResponseEntity<Object> handleException(WorkWithSQLException e) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("exception", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+}
