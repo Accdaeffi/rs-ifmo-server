@@ -13,8 +13,6 @@ public class ConnectionUtils {
 	private static final String JDBC_URL = "jdbc:postgresql://localhost:5432/ifmo-ws";
 	private static final String JDBC_USER = "ifmo-ws";
 	private static final String JDBC_PASSWORD = "ifmo-ws";
-
-	DataSource dataSource;
 	
 	public Connection getConnection() {
 		Connection connection = null;
