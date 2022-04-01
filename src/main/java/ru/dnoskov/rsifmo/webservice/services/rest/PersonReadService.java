@@ -23,18 +23,18 @@ public class PersonReadService implements ApplicationContextAware {
 	
 
 	@GetMapping("/all")
-	public List<Person> getAllPersons() throws WorkWithSQLException {
+	public ListPersonResponse getAllPersons() throws WorkWithSQLException {
 
 		ReadService service = ctx.getBean(ReadService.class);
 		try {
-			return service.getAllPersons();
+			return new ListPersonResponse(service.getAllPersons());
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
 		}
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/person/{id}")
 	public Person getPersonById(@PathVariable int id) throws WorkWithSQLException, PersonWithSuchIdNotFoundException {
 
 		ReadService service = ctx.getBean(ReadService.class);
@@ -56,7 +56,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byName")
-	public List<Person> getPersonsByName(@RequestParam String name) throws WorkWithSQLException, EmptyArgumentException {
+	public ListPersonResponse getPersonsByName(@RequestParam String name) throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		if (name == null || name.equals("")) {
@@ -64,7 +64,7 @@ public class PersonReadService implements ApplicationContextAware {
 		}
 
 		try {
-			return service.getByName(name);
+			return new ListPersonResponse(service.getByName(name));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -72,7 +72,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/bySurname")
-	public List<Person> getPersonsBySurname(@RequestParam String surname)
+	public ListPersonResponse getPersonsBySurname(@RequestParam String surname)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -81,7 +81,7 @@ public class PersonReadService implements ApplicationContextAware {
 		}
 
 		try {
-			return service.getBySurname(surname);
+			return new ListPersonResponse(service.getBySurname(surname));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -89,7 +89,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byPatronymic")
-	public List<Person> getPersonsByPatronymic(@RequestParam String patronymic)
+	public ListPersonResponse getPersonsByPatronymic(@RequestParam String patronymic)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -98,7 +98,7 @@ public class PersonReadService implements ApplicationContextAware {
 		}
 
 		try {
-			return service.getByPatronymic(patronymic);
+			return new ListPersonResponse(service.getByPatronymic(patronymic));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -106,7 +106,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byAge")
-	public List<Person> getPersonsByAge(@RequestParam int age) throws WorkWithSQLException, IncorrectArgumentException {
+	public ListPersonResponse getPersonsByAge(@RequestParam int age) throws WorkWithSQLException, IncorrectArgumentException {
 		if (age < 0) {
 			throw new IncorrectArgumentException("age");
 		}
@@ -114,7 +114,7 @@ public class PersonReadService implements ApplicationContextAware {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		try {
-			return service.getByAge(age);
+			return new ListPersonResponse(service.getByAge(age));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -122,7 +122,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byNameAndSurname")
-	public List<Person> getPersonsByNameAndSurname(@RequestParam String name, @RequestParam String surname)
+	public ListPersonResponse getPersonsByNameAndSurname(@RequestParam String name, @RequestParam String surname)
 			throws WorkWithSQLException, EmptyArgumentException {
 		ReadService service = ctx.getBean(ReadService.class);
 
@@ -135,7 +135,7 @@ public class PersonReadService implements ApplicationContextAware {
 		}
 
 		try {
-			return service.getByNameAndSurname(name, surname);
+			return new ListPersonResponse(service.getByNameAndSurname(name, surname));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -143,7 +143,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/byFullName")
-	public List<Person> getPersonsByFullName(@RequestParam String name, 
+	public ListPersonResponse getPersonsByFullName(@RequestParam String name, 
 			@RequestParam String surname,
 			@RequestParam String patronymic) 
 					throws WorkWithSQLException, EmptyArgumentException {
@@ -162,7 +162,7 @@ public class PersonReadService implements ApplicationContextAware {
 		}
 
 		try {
-			return service.getByFullName(name, surname, patronymic);
+			return new ListPersonResponse(service.getByFullName(name, surname, patronymic));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -170,7 +170,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/youngerThan")
-	public List<Person> getPersonsYoungerThan(@RequestParam int age)
+	public ListPersonResponse getPersonsYoungerThan(@RequestParam int age)
 			throws WorkWithSQLException, IncorrectArgumentException {
 
 		if (age < 0) {
@@ -180,7 +180,7 @@ public class PersonReadService implements ApplicationContextAware {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		try {
-			return service.getYoungerThan(age);
+			return new ListPersonResponse(service.getYoungerThan(age));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
@@ -188,7 +188,7 @@ public class PersonReadService implements ApplicationContextAware {
 	}
 
 	@GetMapping("/olderThan")
-	public List<Person> getPersonsOlderThan(@RequestParam int age)
+	public ListPersonResponse getPersonsOlderThan(@RequestParam int age)
 			throws WorkWithSQLException, IncorrectArgumentException {
 
 		if (age < 0) {
@@ -198,7 +198,7 @@ public class PersonReadService implements ApplicationContextAware {
 		ReadService service = ctx.getBean(ReadService.class);
 
 		try {
-			return service.getOlderThan(age);
+			return new ListPersonResponse(service.getOlderThan(age));
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);

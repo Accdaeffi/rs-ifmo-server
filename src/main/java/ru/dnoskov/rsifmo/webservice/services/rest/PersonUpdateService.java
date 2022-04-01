@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,9 +22,13 @@ public class PersonUpdateService implements ApplicationContextAware {
 	ApplicationContext ctx;
 	
 	@PutMapping("/updatePerson")
-	public boolean updatePerson(@RequestParam int id, @RequestBody Person person)
+	public ResponseEntity updatePerson(@RequestBody Person person)
 			throws WorkWithSQLException, IncorrectArgumentException, EmptyArgumentException {
 		UpdateService service = ctx.getBean(UpdateService.class);
+		
+		if (person.getId() == 0) {
+			throw new EmptyArgumentException("id");
+		}
 
 		if (person.getName() == null || person.getName().equals("")) {
 			throw new EmptyArgumentException("name");
@@ -40,10 +46,12 @@ public class PersonUpdateService implements ApplicationContextAware {
 			throw new IncorrectArgumentException("age");
 		}
 		
-		person.setId(id);
-		
 		try {
-			return service.updatePerson(person);
+			if (service.updatePerson(person)) {
+				return new ResponseEntity(HttpStatus.OK);
+			} else {
+				return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 			throw new WorkWithSQLException(e.getMessage(), e);
