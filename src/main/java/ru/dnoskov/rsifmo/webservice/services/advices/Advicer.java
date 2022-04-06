@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import ru.dnoskov.rsifmo.webservice.exceptions.*;
+import ru.dnoskov.rsifmo.webservice.services.throttling.ThrottlingException;
 
 @ControllerAdvice
 public class Advicer {
@@ -51,5 +52,15 @@ public class Advicer {
         body.put("message", e.getMessage());
 
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ExceptionHandler(ThrottlingException.class)
+    public ResponseEntity<Object> handleException(ThrottlingException e) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("exception", e.getClass().getSimpleName());
+        body.put("message", e.getMessage());
+
+        return new ResponseEntity<>(body, HttpStatus.TOO_MANY_REQUESTS);
     }
 }
